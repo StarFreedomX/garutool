@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import io.github.garutool.tools.ToolPreferences
 import io.github.garutool.tools.ToolCatalog
 import kotlin.math.roundToInt
 
@@ -25,6 +26,7 @@ class OverlayWindow(context: Context, private val onAction: (String) -> Unit) {
     private var params: WindowManager.LayoutParams? = null
     private var positionBounds: Rect? = null
     private var dark: Boolean? = null
+    private var actions: List<String> = emptyList()
     private val drag = OverlayDrag(windowContext,
         origin = { params?.let { Point(it.x, it.y) } },
         move = { x, y ->
@@ -37,8 +39,10 @@ class OverlayWindow(context: Context, private val onAction: (String) -> Unit) {
         save = { savePosition() },
     )
 
-    fun refreshAppearance() {
-        if (view != null && dark != ToolCatalog.isDark(windowContext)) show()
+    fun refreshConfiguration() {
+        val enabled = ToolPreferences(windowContext).enabledActions
+        if (enabled.isNotEmpty() && view != null &&
+            (dark != ToolCatalog.isDark(windowContext) || actions != enabled)) show()
     }
 
     fun show() {
@@ -67,6 +71,7 @@ class OverlayWindow(context: Context, private val onAction: (String) -> Unit) {
         params = layout
         positionBounds = bounds
         dark = ToolCatalog.isDark(windowContext)
+        actions = ToolPreferences(windowContext).enabledActions
         bar.post { clamp() }
     }
 

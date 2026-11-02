@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { toolCatalog } from './config/tools'
+import type { ActionId } from './config/tools'
 import { useTools } from './composables/useTools'
 import { useAppearance } from './composables/useAppearance'
 import { useBackNavigation } from './composables/useBackNavigation'
 import { isThemeMode } from './tools/settings'
+import SwitchRow from './components/SwitchRow.vue'
 import AppIcon from './components/AppIcon.vue'
 import PropertyRow from './components/PropertyRow.vue'
-import OverlayPreview from './components/OverlayPreview.vue'
 import ChoiceDialog from './components/ChoiceDialog.vue'
 
 const { state, busy, message, setOverlayEnabled, updateConfig, openSettings } = useTools()
 useAppearance(state)
+const enabledActions = computed(() => state.value?.config.enabledActions ?? [])
 const dialog = ref<'duration' | 'theme' | null>(null)
 useBackNavigation(() => {
   if (!dialog.value) return false
@@ -47,6 +49,14 @@ const overlayLabel = computed(() => {
   }
 })
 
+function toggleAction(actionId: ActionId, enabled: boolean) {
+  return updateConfig({
+    enabledActions: toolCatalog.actions
+      .filter(({ id }) => (id === actionId ? enabled : enabledActions.value.includes(id)))
+      .map(({ id }) => id),
+  })
+}
+
 async function selectOption(value: string | number) {
   const kind = dialog.value
   dialog.value = null
@@ -62,21 +72,27 @@ async function selectOption(value: string | number) {
       <AppIcon name="app" />
       <h1>GaruTool</h1>
     </header>
-    <OverlayPreview />
-    <button
-      class="overlay-row"
-      role="switch"
-      :aria-checked="state?.config.overlayEnabled ?? false"
-      :disabled="busy"
-      @click="setOverlayEnabled(!state?.config.overlayEnabled)"
-    >
-      <AppIcon name="overlay" class="row-icon" />
-      <span class="row-label">悬浮窗</span>
-      <span v-if="overlayLabel" class="row-value">{{ overlayLabel }}</span>
-      <span class="switch" :class="{ checked: state?.config.overlayEnabled }" aria-hidden="true"
-        ><span></span
-      ></span>
-    </button>
+    <SwitchRow
+      label="悬浮窗"
+      icon="overlay"
+      :checked="state?.config.overlayEnabled ?? false"
+      :disabled="busy || (!enabledActions.length && !state?.config.overlayEnabled)"
+      :status="enabledActions.length ? overlayLabel : '先开启功能'"
+      @change="setOverlayEnabled"
+    />
+    <hr />
+    <section aria-labelledby="features-title">
+      <h2 id="features-title" class="section-label">功能</h2>
+      <SwitchRow
+        v-for="action in toolCatalog.actions"
+        :key="action.id"
+        :label="action.label"
+        :icon="action.icon"
+        :checked="enabledActions.includes(action.id)"
+        :disabled="busy"
+        @change="(enabled) => toggleAction(action.id, enabled)"
+      />
+    </section>
     <hr />
     <section aria-labelledby="permissions-title">
       <h2 id="permissions-title" class="section-label">权限</h2>

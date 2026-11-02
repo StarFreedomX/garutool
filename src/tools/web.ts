@@ -38,6 +38,7 @@ export class WebTools extends WebPlugin {
 
   async updateConfig(update: ConfigUpdate): Promise<ToolState> {
     this.config = { ...this.config, ...validateConfigUpdate(update) }
+    if (!this.config.enabledActions.length) this.config.overlayEnabled = false
     localStorage.setItem('garutool-preview', JSON.stringify(this.config))
     this.publish()
     return this.getState()

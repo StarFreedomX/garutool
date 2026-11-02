@@ -10,6 +10,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import io.github.garutool.tools.ToolPreferences
 import io.github.garutool.tools.ToolCatalog
 import io.github.garutool.tools.dp
 
@@ -28,7 +29,8 @@ fun floatingToolbar(context: Context, drag: OverlayDrag, onAction: (String) -> U
         }
         elevation = size("elevation").toFloat()
     }
-    ToolCatalog.actions.forEachIndexed { index, action ->
+    val enabled = ToolPreferences(context).enabledActions
+    ToolCatalog.actions.filter { it.id in enabled }.forEachIndexed { index, action ->
         if (index > 0) bar.addView(View(context).apply { setBackgroundColor(palette.line) },
             LinearLayout.LayoutParams(size("separatorWidth"), size("separatorHeight")).apply {
                 marginStart = size("separatorMargin")

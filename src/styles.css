@@ -237,3 +237,7 @@ hr {
     transition: none !important;
   }
 }
+
+.overlay-row:disabled {
+  opacity: 0.45;
+}

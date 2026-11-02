@@ -15,7 +15,6 @@ import com.getcapacitor.annotation.CapacitorPlugin
 import com.getcapacitor.annotation.Permission
 import com.getcapacitor.annotation.PermissionCallback
 import io.github.garutool.BackAccessibilityService
-import io.github.garutool.tools.ToolPreferences
 import io.github.garutool.tools.ToolRuntime
 
 @CapacitorPlugin(name = "GaruTools", permissions = [
@@ -53,8 +52,16 @@ class ToolsPlugin : Plugin() {
             require(value is String) { "Unknown theme" }
             value
         } else null
-        ToolPreferences(context).update(theme, duration)
-        ToolRuntime.publish()
+        val actions = if (call.data.has("enabledActions")) {
+            val items = call.data.opt("enabledActions")
+            require(items is org.json.JSONArray) { "Invalid actions" }
+            (0 until items.length()).map {
+                val id = items.opt(it)
+                require(id is String) { "Invalid action" }
+                id
+            }
+        } else null
+        ToolRuntime.updateConfig(context, theme, duration, actions)
         resolveState(call)
     }
 

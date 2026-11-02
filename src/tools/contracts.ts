@@ -1,13 +1,16 @@
 import type { PluginListenerHandle } from '@capacitor/core'
-import type { ThemeMode } from '../config/tools'
+import type { ActionId, ThemeMode } from '../config/tools'
 
 export interface ToolConfig {
   overlayEnabled: boolean
+  enabledActions: ActionId[]
   pauseDurationMs: number
   themeMode: ThemeMode
 }
 
-export type ConfigUpdate = Partial<Pick<ToolConfig, 'pauseDurationMs' | 'themeMode'>>
+export type ConfigUpdate = Partial<
+  Pick<ToolConfig, 'pauseDurationMs' | 'themeMode' | 'enabledActions'>
+>
 export type SettingsPage = 'overlay' | 'accessibility'
 
 export interface ToolState {

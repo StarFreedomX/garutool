@@ -21,7 +21,7 @@ import io.github.garutool.tools.ToolRuntime
 class OverlayService : Service() {
     private var overlay: OverlayWindow? = null
     private val settingsChanged: () -> Unit = {
-        try { overlay?.refreshAppearance() } catch (error: RuntimeException) { fail(error) }
+        try { overlay?.refreshConfiguration() } catch (error: RuntimeException) { fail(error) }
     }
 
     override fun onCreate() {
@@ -35,6 +35,7 @@ class OverlayService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) ToolPreferences(this).overlayEnabled = false
+        if (ToolPreferences(this).enabledActions.isEmpty()) ToolPreferences(this).overlayEnabled = false
         if (!ToolPreferences(this).overlayEnabled || !Settings.canDrawOverlays(this)) {
             stopSelf()
             return START_NOT_STICKY

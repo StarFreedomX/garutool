@@ -44,6 +44,7 @@ object ToolRuntime {
     fun shown() { setOverlayStatus(OverlayStatus.RUNNING) }
 
     fun setEnabled(context: Context, enabled: Boolean) {
+        require(!enabled || ToolPreferences(context).enabledActions.isNotEmpty()) { "先开启至少一个功能" }
         ToolPreferences(context).overlayEnabled = enabled
         if (enabled) start(context) else {
             context.stopService(Intent(context, OverlayService::class.java))
@@ -51,7 +52,17 @@ object ToolRuntime {
         }
     }
 
+    fun updateConfig(context: Context, theme: String?, duration: Long?, actions: List<String>?) {
+        val preferences = ToolPreferences(context)
+        preferences.update(theme, duration, actions)
+        if (preferences.enabledActions.isEmpty()) setEnabled(context, false) else publish()
+    }
+
     fun reconcile(context: Context) {
+        if (ToolPreferences(context).enabledActions.isEmpty()) {
+            setEnabled(context, false)
+            return
+        }
         if (!ToolPreferences(context).overlayEnabled) return
         if (!Settings.canDrawOverlays(context)) {
             context.stopService(Intent(context, OverlayService::class.java))

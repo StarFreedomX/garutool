@@ -1,7 +1,7 @@
 {
   "name": "garutool",
-  "version": "0.2.0",
-  "androidVersionCode": 6,
+  "version": "0.1.0",
+  "androidVersionCode": 1,
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.13.1",
