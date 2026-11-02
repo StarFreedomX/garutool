@@ -1,0 +1,40 @@
+{
+  "name": "garutool",
+  "version": "0.2.0",
+  "androidVersionCode": 6,
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.13.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "check": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "pnpm check && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "android:sync": "pnpm build && cap sync android",
+    "android:open": "cap open android",
+    "android:build": "pnpm android:sync && node scripts/build-android.mjs",
+    "android:lint": "node scripts/build-android.mjs --lint"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "8.6.0",
+    "vue": "3.5.44"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.0",
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "prettier": "3.9.10",
+    "typescript": "^6.0.3",
+    "vite": "8.3.5",
+    "vitest": "^4.0.0",
+    "vue-tsc": "^3.3.13"
+  }
+}

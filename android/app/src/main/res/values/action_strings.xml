@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="overlay_notification_channel">悬浮窗</string>
+    <string name="overlay_notification_status">悬浮窗已开启</string>
+    <string name="overlay_notification_stop">关闭悬浮窗</string>
+    <string name="back_enable_required">在无障碍中开启 %1$s</string>
+    <string name="back_accessibility_description">通过悬浮按钮执行系统返回。</string>
+    <string name="action_unavailable">暂时无法执行</string>
+</resources>

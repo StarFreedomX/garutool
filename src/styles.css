@@ -1,0 +1,239 @@
+:root {
+  font-family: Roboto, 'Noto Sans CJK SC', 'PingFang SC', system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --surface: #fff;
+  --subtle: #f5f6f8;
+  --text: #202124;
+  --muted: #737781;
+  --line: #e7e8ec;
+  --input-line: #d7d9df;
+  --accent: #ff3377;
+  --on-accent: #fff;
+  color: var(--text);
+  background: var(--surface);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: var(--safe-area-inset-top, env(safe-area-inset-top, 0px))
+    var(--safe-area-inset-right, env(safe-area-inset-right, 0px))
+    var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))
+    var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+}
+button {
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+button:disabled {
+  cursor: default;
+}
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
+  user-select: none;
+}
+.app-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-header > .app-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
+}
+h1 {
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.35px;
+  margin: 0;
+}
+hr {
+  margin: 0;
+  border: 0;
+  height: 1px;
+  background: var(--line);
+}
+.overlay-row,
+.property-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 12px 0;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+.overlay-row {
+  min-height: 68px;
+}
+.property-row {
+  min-height: 62px;
+}
+.property-row:active,
+.overlay-row:active {
+  background: var(--subtle);
+}
+.row-icon {
+  color: var(--muted);
+  width: 22px;
+  height: 22px;
+}
+.row-label {
+  flex: 1;
+}
+.row-value {
+  color: var(--muted);
+  font-size: 13px;
+}
+.row-value.active {
+  color: var(--accent);
+}
+.chevron {
+  color: var(--muted);
+  width: 18px;
+  height: 18px;
+  margin-left: -4px;
+}
+.section-label {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 24px 0 4px;
+}
+.switch {
+  display: block;
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--input-line);
+  padding: 2px;
+  flex: none;
+  transition: background 0.12s;
+}
+.switch > span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px #0002;
+  transition: transform 0.12s;
+}
+.switch.checked {
+  background: var(--accent);
+}
+.switch.checked > span {
+  transform: translateX(18px);
+}
+.state-error {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 16px 0 0;
+}
+.choice-dialog {
+  width: min(320px, calc(100vw - 48px));
+  padding: 24px 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 12px 48px #0003;
+}
+.choice-dialog::backdrop {
+  background: #0006;
+}
+.choice-dialog h2 {
+  margin: 0 24px 12px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.choice-option {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 48px;
+  width: 100%;
+  padding: 12px 24px;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+  text-align: left;
+}
+.choice-option:active {
+  background: var(--subtle);
+}
+.radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.radio.selected {
+  border-color: var(--accent);
+}
+.radio.selected::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.dialog-cancel {
+  display: block;
+  margin: 4px 12px 0 auto;
+  padding: 12px;
+  background: transparent;
+  color: var(--accent);
+  border: 0;
+  font-size: 14px;
+}
+.toast {
+  position: fixed;
+  bottom: calc(24px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - 48px);
+  background: var(--text);
+  color: var(--surface);
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+  z-index: 10;
+}
+@media (min-width: 600px) {
+  .page {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  .app-header {
+    height: 96px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
